@@ -1,16 +1,48 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { after, before, test } from "node:test";
+import { dirname, resolve } from "node:path";
+import { setTimeout as delay } from "node:timers/promises";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const port = 3100;
+const baseUrl = `http://127.0.0.1:${port}`;
+let server;
+
+before(async () => {
+  server = spawn(
+    process.execPath,
+    [resolve(root, "node_modules/next/dist/bin/next"), "start", "-p", String(port)],
+    { cwd: root, stdio: ["ignore", "pipe", "pipe"] },
+  );
+
+  const output = [];
+  server.stdout.on("data", (chunk) => output.push(chunk.toString()));
+  server.stderr.on("data", (chunk) => output.push(chunk.toString()));
+
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    if (server.exitCode !== null) {
+      throw new Error(`Next.js test server stopped unexpectedly.\n${output.join("")}`);
+    }
+    try {
+      const response = await fetch(baseUrl);
+      if (response.ok) return;
+    } catch {
+      // The server is still starting.
+    }
+    await delay(500);
+  }
+
+  throw new Error(`Next.js test server did not become ready.\n${output.join("")}`);
+});
+
+after(() => {
+  server?.kill();
+});
 
 async function render(path = "/", init) {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
-
-  return worker.fetch(
-    new Request(`http://localhost${path}`, init ?? { headers: { accept: "text/html" } }),
-    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
+  return fetch(`${baseUrl}${path}`, init ?? { headers: { accept: "text/html" } });
 }
 
 test("server-renders the GlobalBrief landing page", async () => {

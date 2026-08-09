@@ -125,7 +125,8 @@ export async function extractPdfPages(file: File): Promise<ExtractedPage[]> {
   if (!pdfjs.GlobalWorkerOptions.workerPort) {
     pdfjs.GlobalWorkerOptions.workerPort = new Worker(new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url), { type: "module" });
   }
-  const pdf = await pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
+  const loadingTask = pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) });
+  const pdf = await loadingTask.promise;
   const pages: ExtractedPage[] = [];
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
     const page = await pdf.getPage(pageNumber);
@@ -133,7 +134,7 @@ export async function extractPdfPages(file: File): Promise<ExtractedPage[]> {
     const text = clean(content.items.map((item) => ("str" in item ? item.str : "")).join(" "));
     pages.push({ page: pageNumber, text });
   }
-  await pdf.destroy();
+  await loadingTask.destroy();
   return pages;
 }
 
@@ -179,6 +180,23 @@ export function buildLocalEvidenceBrief(fileName: string, pages: ExtractedPage[]
     notes: l.socialNotes[index],
   }));
   const themeSummary = resolvedThemes.slice(0, 3).join(", ");
+  const pagesForTheme = (theme: string) =>
+    [...new Set(candidates.filter((item) => item.theme === theme).map((item) => item.page))]
+      .join(", ") || "—";
+  const mainThemes = resolvedThemes.map((theme) => ({
+    title: theme,
+    description: l.why(theme),
+    pages: pagesForTheme(theme),
+  }));
+  const evidenceAreas = resolvedThemes.map((theme) => {
+    const item = candidates.find((candidate) => candidate.theme === theme) ?? candidates[0];
+    return {
+      type: /\d|%/u.test(item.sentence) ? "Extracted data" : "Extracted evidence",
+      label: theme,
+      evidence: item.sentence,
+      page: String(item.page),
+    };
+  });
 
   return {
     mode: "live",
@@ -191,9 +209,9 @@ export function buildLocalEvidenceBrief(fileName: string, pages: ExtractedPage[]
     executiveSummary: candidates.slice(0, Math.min(4, candidates.length)).map((item) => item.sentence).join(" "),
     summarySections: {
       background: sentences(readablePages[0].text).slice(0, 2).join(" ") || readablePages[0].text.slice(0, 500),
-      mainThemes: resolvedThemes,
+      mainThemes,
       keyFindings: candidates.map((item) => ({ title: item.theme, detail: item.sentence, page: String(item.page) })),
-      evidenceAreas: resolvedThemes.map((theme) => ({ label: theme, pages: [...new Set(candidates.filter((item) => item.theme === theme).map((item) => item.page))].join(", ") || "—" })),
+      evidenceAreas,
       communicationImplications: l.implications(themeSummary),
     },
     keyMessages,

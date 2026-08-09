@@ -60,8 +60,7 @@ The sample report is a public publication produced by UN Women and the United Na
 - React 19
 - TypeScript
 - Tailwind CSS
-- Next.js-compatible App Router components
-- Vinext and Vite
+- Next.js 16 with the App Router
 - PDF.js for local PDF handling
 
 ## Local development
@@ -106,7 +105,6 @@ components/   Shared interface components
 lib/          Demo analysis, communication modes and localization
 public/       Public assets and the sample report
 tests/        Rendered-page and API workflow tests
-worker/       Application runtime entry point
 ```
 
 ## Portfolio context

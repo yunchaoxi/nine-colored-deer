@@ -27,7 +27,11 @@ function getLocaleSnapshot(): Locale {
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const locale = useSyncExternalStore(subscribe, getLocaleSnapshot, () => "en");
+  const locale = useSyncExternalStore(
+    subscribe,
+    getLocaleSnapshot,
+    (): Locale => "en",
+  );
 
   useEffect(() => {
     document.documentElement.lang = locale === "zh" ? "zh-CN" : locale;
