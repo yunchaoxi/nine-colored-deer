@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+  --page: #f4f7fa;
+  --surface: #ffffff;
+  --surface-soft: #eaf2f7;
+  --ink: #15364a;
+  --muted: #627787;
+  --line: #d7e1e8;
+  --brand: #176b98;
+  --brand-dark: #104b6b;
+  --brand-soft: #e2f0f7;
+  --success: #2d795c;
+  --success-soft: #e5f3ec;
+  --warning: #9a681e;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-soft: var(--brand-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --font-sans: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+a,
+input,
+select {
+  outline-color: var(--brand);
+}
+
+::selection {
+  color: #ffffff;
+  background: var(--brand);
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(23, 107, 152, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 107, 152, 0.06) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: linear-gradient(to bottom, black 15%, transparent 90%);
+}
+
+.document-lines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 13px,
+    #d9e2e7 14px,
+    transparent 15px
+  );
+}
+
+.analysis-pulse {
+  animation: analysis-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes analysis-pulse {
+  0%, 100% { opacity: 0.45; transform: scaleX(0.82); }
+  50% { opacity: 1; transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .analysis-pulse { animation: none; }
+}
