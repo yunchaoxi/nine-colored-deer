@@ -45,19 +45,61 @@ async function render(path = "/", init) {
   return fetch(`${baseUrl}${path}`, init ?? { headers: { accept: "text/html" } });
 }
 
-test("server-renders the GlobalBrief landing page", async () => {
+test("server-renders the complete Nine-Colored Deer story", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /Independent Portfolio Project/i);
-  assert.match(html, /Plan evidence-based communication from complex public reports/);
-  assert.match(html, /Stakeholder engagement/);
-  assert.match(html, /Responsible AI-supported practice/);
-  assert.match(html, /Try sample report/);
-  assert.match(html, /The Gender Snapshot 2025/);
+  assert.match(html, /THE NINE-/i);
+  assert.match(html, /A Promise in the Desert/);
+  assert.match(html, /THE ENCOUNTER/);
+  assert.match(html, /THE RESCUE/);
+  assert.match(html, /THE PROMISE/);
+  assert.match(html, /THE BETRAYAL/);
+  assert.match(html, /THE REVELATION/);
+  assert.match(html, /THE AWAKENING/);
+  assert.match(html, /THE PRICE OF BETRAYAL/);
+  assert.match(html, /THE ASCENT/);
+  assert.match(html, /Kindness outlived/);
+  assert.match(html, /Revisit the story/);
+  assert.match(html, /Deer King Jātaka of Mogao Cave 257/);
+  assert.match(html, /1981 animated film/);
+  assert.match(html, /assets\/nine-colored-deer\/deer-1145\.webp/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
+});
+
+test("renders one aligned procession in the betrayal chapter", async () => {
+  const response = await render();
+  const html = await response.text();
+
+  assert.match(html, /betrayal-procession-replacement/);
+  assert.match(html, /04-royal-procession-user-v2\.png\?v=2/);
+  assert.doesNotMatch(html, /procession-rig__piece/);
+  assert.match(html, /When the king offered gold for the mysterious deer, the traveller abandoned his promise and betrayed the one who had saved him\./);
+  assert.match(html, /At the glint of gold,/);
+  assert.match(html, /a promise turned to dust\./);
+  assert.doesNotMatch(html, /procession-rig__retinue-image/);
+});
+
+test("renders navigation 00–08 and the consistent herbalist character", async () => {
+  const response = await render();
+  const html = await response.text();
+
+  for (const id of ["opening", "encounter", "rescue", "promise", "betrayal", "revelation", "awakening", "price", "ascent"]) {
+    assert.match(html, new RegExp(`href="#${id}"`));
+  }
+  assert.match(html, /traveller-herbalist-drowning\.png/);
+  assert.match(html, /traveller-herbalist-thanking\.png/);
+  assert.match(html, /04-royal-procession-user-v2\.png\?v=2/);
+  assert.match(html, /plunging-traveller\.png/);
+  assert.match(html, /splash-impact-tall\.png/);
+  assert.match(html, /splash-foreground-wide\.png/);
+  assert.match(html, /arrow-volley\.png/);
+  assert.match(html, /arrows-to-ash\.png/);
+  assert.match(html, /king-and-soldiers-weapons-lowered\.png/);
+  assert.match(html, /price-water-background\.png/);
+  assert.match(html, /nine-colored-deer-ascending\.png/);
 });
 
 test("moves communication objectives from upload to results", async () => {

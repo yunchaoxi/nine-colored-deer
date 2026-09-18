@@ -1,118 +1,83 @@
-# GlobalBrief AI
+# The Nine-Colored Deer
 
-**An evidence-based communication planning prototype for international public information work.**
+**A Promise in the Desert** is a single-page interactive portfolio experience inspired by the Nine-Colored Deer story depicted in the murals of Dunhuang.
 
-![GlobalBrief AI interface](public/og.png)
+The project translates an ancient moral tale into a contemporary editorial website for an international audience. Its visual language pairs weathered mineral-pigment artwork with bold typography, cinematic pacing and restrained scroll-based motion. It is an independent interpretation, not a reproduction of a specific mural or museum object.
 
-GlobalBrief AI is an independent portfolio project exploring how responsible AI-supported workflows can help communication teams translate complex public reports into structured, audience-focused communication briefs.
+## Run locally
 
-The project is designed around the working practices of Communication and Public Information Officers: source traceability, stakeholder analysis, accessible communication, channel planning and human editorial review.
-
-> This is a portfolio demonstration using a public report. Outputs are illustrative and require human review. The project has no official affiliation with any international organization.
-
-## Project purpose
-
-Long policy and research reports contain valuable evidence, but turning that evidence into clear public information requires more than summarization. GlobalBrief AI demonstrates a reviewable workflow that connects source material to:
-
-- report themes and key findings;
-- evidence-linked key messages;
-- stakeholder and audience analysis;
-- platform-specific public information drafts;
-- communication materials for policy, public and media use.
-
-The central design question is: **How can AI support communication planning while preserving evidence traceability, professional judgement and editorial accountability?**
-
-## Core features
-
-- **Evidence-based executive summary** — report overview, main themes, key findings, evidence areas and communication implications.
-- **Source traceability** — page references, direct quotations or extracted data, and communication relevance.
-- **Interactive analysis scope** — side panels explain how themes, findings and evidence relate to the source report.
-- **Audience analysis matrix** — audience role, communication needs, recommended approach and channels.
-- **Communication modes** — policy, public and media communication outputs based on the same evidence base.
-- **Public information products** — illustrative LinkedIn, X and Instagram drafts with purpose, audience and hashtags.
-- **Multilingual interface** — English, French and Chinese.
-- **Sample report workflow** — a complete demonstration using *Progress on the Sustainable Development Goals: The Gender Snapshot 2025*.
-- **PDF upload prototype** — client-side file validation with a 12 MB limit and a simulated analysis workflow.
-
-## Responsible AI approach
-
-GlobalBrief AI is designed as drafting and planning support, not an autonomous publishing system.
-
-- Extracted evidence is separated from communication interpretation.
-- Source pages remain visible throughout the analysis.
-- Outputs are editable and require human verification.
-- Global findings are not presented as universally applicable national conclusions.
-- No content is automatically approved or published.
-
-## Demonstration status
-
-This repository contains a portfolio prototype rather than a production AI service.
-
-- No external AI API is connected.
-- Uploaded PDF contents are not sent to a server or third party.
-- The upload endpoint receives file metadata only and returns illustrative demo content.
-- The bundled sample analysis is based on selected evidence from the public report and is intended to demonstrate the information architecture and communication workflow.
-
-The sample report is a public publication produced by UN Women and the United Nations Department of Economic and Social Affairs Statistics Division. Inclusion of the report does not imply endorsement of this project.
-
-## Technology
-
-- React 19
-- TypeScript
-- Tailwind CSS
-- Next.js 16 with the App Router
-- PDF.js for local PDF handling
-
-## Local development
-
-### Requirements
-
-- Node.js 22.13 or newer
-- pnpm
-
-### Run locally
+Requirements: Node.js 22.13 or newer.
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-No API key is required for the portfolio demonstration.
-
-## Available commands
+Create a production build with:
 
 ```bash
-pnpm dev      # Start the local development server
-pnpm build    # Create a production build
-pnpm lint     # Run code-quality checks
-pnpm test     # Build and run the automated tests
+npm run build
+npm start
 ```
 
-## Main routes
+The existing pnpm workflow remains supported (`pnpm install`, `pnpm dev`, `pnpm build`).
 
-- `/` — project landing page and portfolio context
-- `/upload` — PDF registration and communication planning parameters
-- `/results` — evidence-based communication brief workspace
-- `/api/analyze` — metadata-only prototype analysis endpoint
+## Design and interaction
 
-## Project structure
+- Nine numbered scenes run from 00 Opening through 08 Ascent, moving from encounter, rescue and promise to betrayal, revelation, awakening, consequence and transcendence.
+- Supplied artwork remains separated into deer, traveller, river landscape, desert and royal-procession layers. It is never flattened into one page background.
+- GSAP and ScrollTrigger control native-scroll-linked camera pull-backs, cross-screen travel, mask reveals, the promise seal, the arrow-to-ash revelation, weapon lowering, layered submersion and the final ascent.
+- One consistent South Asian herb gatherer design is used for the drowning, thanking, pointing and falling poses.
+- The deer keeps its complete painted silhouette in the hero scenes; separated rig pieces are reserved for secondary details and the staged royal procession, avoiding visible collage seams.
+- Pointer depth is deliberately subtle. There is no inertial-scroll takeover.
+- Mobile layouts reduce layer travel and simplify the chapter navigation to a top progress rail.
+- `prefers-reduced-motion` disables scroll-linked transforms and smooth scrolling while preserving the complete story.
+
+## Visual assets
+
+The supplied source packages are preserved under `assets-source/nine-colored-deer-assets/` and `assets-source/nine-colored-deer-ending-assets/`. Responsive WebP variants, rig pieces and the transparent ending PNG layers live in `public/assets/nine-colored-deer/`. Important narrative images include descriptive alt text; repeated decorative layers are hidden from assistive technology. Non-opening images use native lazy loading and async decoding.
+
+Rebuild all responsive and articulated assets with:
+
+```bash
+npm run assets:build
+```
+
+The asset pipeline extracts the deer body, head, antlers, legs, tail and ribbons; the procession characters, flags and dust; the decorative cloud motifs; and copies the supplied transparent continuation layers without flattening them. The Rescue, Promise, Betrayal and Price scenes use matching herb-gatherer poses from the same character sheet.
+
+The continuation package did not include every filename listed in the production brief. The implementation therefore derives these states from supplied matching layers: front/back arrow volleys reuse `arrow-volley.png`; sinking reuses the consistent falling pose behind the foreground water; back/middle clouds reuse the supplied cloud artwork at different depth, scale and opacity; tears, ripples, ash drift and the protective boundary are separate CSS/GSAP effect layers. No unrelated stock or placeholder artwork is inserted.
+
+For a final production release, consider replacing or refining:
+
+1. the rectangular desert panorama with hand-separated mountain and river layers for even deeper parallax;
+2. dedicated `traveller-herbalist-sinking.png`, independent herb leaves, rear/middle pool layers and separate back/middle cloud exports if art production continues;
+3. the generated source artwork with commissioned or fully documented rights-cleared artwork if the project is used commercially.
+
+## Technology
+
+- Next.js 16, React 19 and TypeScript
+- GSAP 3 with ScrollTrigger
+- Structured global CSS with responsive breakpoints
+- Sharp-generated WebP source sets
+
+## Portfolio capabilities demonstrated
+
+- Visual storytelling and interactive web design
+- Information structuring and scroll-based animation
+- AI-assisted visual production with reusable asset components
+- Responsive design and reduced-motion accessibility
+- Cross-cultural communication for an international audience
+
+## Primary files
 
 ```text
-app/          Routes, pages and API endpoint
-components/   Shared interface components
-lib/          Demo analysis, communication modes and localization
-public/       Public assets and the sample report
-tests/        Rendered-page and API workflow tests
+app/page.tsx                         Page entry
+app/globals.css                      Art direction and responsive layout
+components/story-experience.tsx      Story structure and animation system
+scripts/process-nine-colored-deer-assets.mjs  Repeatable asset-processing pipeline
+assets-source/nine-colored-deer-assets/       Preserved source artwork
+assets-source/nine-colored-deer-ending-assets/ Continuation source artwork
+public/assets/nine-colored-deer/     Responsive WebP artwork
 ```
-
-## Portfolio context
-
-This project demonstrates competencies relevant to international communication and public information roles, including:
-
-- evidence-based communication;
-- message development and editorial judgement;
-- stakeholder and audience analysis;
-- accessible, multilingual public information;
-- responsible use of emerging technologies.

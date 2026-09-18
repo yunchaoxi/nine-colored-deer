@@ -1,11 +1,12 @@
 {
-  "name": "globalbrief-ai",
+  "name": "nine-colored-deer-interactive",
   "version": "0.1.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
   },
   "scripts": {
+    "assets:build": "node scripts/process-nine-colored-deer-assets.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -13,10 +14,12 @@
     "lint": "eslint . --ignore-pattern .next"
   },
   "dependencies": {
+    "gsap": "^3.15.0",
     "next": "16.2.6",
     "pdfjs-dist": "^6.2.108",
     "react": "19.2.6",
-    "react-dom": "19.2.6"
+    "react-dom": "19.2.6",
+    "sharp": "^0.35.4"
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",
